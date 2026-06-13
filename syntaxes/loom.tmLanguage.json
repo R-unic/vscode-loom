@@ -1,0 +1,367 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "Loom",
+  "fileTypes": [
+    "loom"
+  ],
+  "patterns": [
+    {
+      "include": "#comments"
+    },
+    {
+      "include": "#keywords"
+    },
+    {
+      "include": "#strings"
+    },
+    {
+      "include": "#characters"
+    },
+    {
+      "include": "#numerics"
+    },
+    {
+      "include": "#object-types"
+    },
+    {
+      "include": "#functions"
+    },
+    {
+      "include": "#identifiers"
+    }
+  ],
+  "repository": {
+    "type": {
+      "patterns": [
+        {
+          "include": "#primitive-types"
+        },
+        {
+          "include": "#generic-type"
+        },
+        {
+          "include": "#object-types"
+        }
+      ]
+    },
+    "primitive-types": {
+      "match": "\\b(number|string|bool|never|unknown|none)\\b",
+      "name": "keyword.type.loom"
+    },
+    "generic-type": {
+      "begin": "([a-zA-Z_][a-zA-Z0-9_]*)\\s*(<)",
+      "beginCaptures": {
+        "1": {
+          "name": "entity.name.class.loom"
+        },
+        "2": {
+          "name": "punctuation.bracket.angle.loom"
+        }
+      },
+      "end": ">",
+      "endCaptures": {
+        "0": {
+          "name": "punctuation.bracket.angle.loom"
+        }
+      },
+      "patterns": [
+        {
+          "include": "#generics"
+        }
+      ]
+    },
+    "default-expression": {
+      "patterns": [
+        {
+          "include": "#numerics"
+        },
+        {
+          "include": "#strings"
+        },
+        {
+          "match": "\\b(true|false)\\b",
+          "name": "constant.language.boolean.loom"
+        },
+        {
+          "match": "\\b(none)\\b",
+          "name": "constant.language.none.loom"
+        },
+        {
+          "match": "[a-zA-Z_][a-zA-Z0-9_]*",
+          "name": "variable.other.loom"
+        }
+      ]
+    },
+    "generics": {
+      "begin": "\\s*<",
+      "beginCaptures": {
+        "0": {
+          "name": "punctuation.bracket.angle.loom"
+        }
+      },
+      "end": ">",
+      "endCaptures": {
+        "0": {
+          "name": "punctuation.bracket.angle.loom"
+        }
+      },
+      "patterns": [
+        {
+          "name": "meta.type-parameter.loom",
+          "begin": "\\b([a-zA-Z_][a-zA-Z0-9_]*)\\b",
+          "beginCaptures": {
+            "1": {
+              "name": "entity.name.class.loom"
+            }
+          },
+          "end": "(?=\\s*(,|>))",
+          "patterns": [
+            {
+              "begin": "\\s*:\\s*",
+              "beginCaptures": {
+                "0": {
+                  "name": "punctuation.separator.constraint.loom"
+                }
+              },
+              "end": "(?=\\s*(,|=|>))",
+              "patterns": [
+                {
+                  "include": "#type"
+                }
+              ]
+            },
+            {
+              "begin": "\\s*=\\s*",
+              "beginCaptures": {
+                "0": {
+                  "name": "keyword.operator.assignment.loom"
+                }
+              },
+              "end": "(?=\\s*(,|>))",
+              "patterns": [
+                {
+                  "include": "#default-expression"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "match": ",",
+          "name": "punctuation.separator.delimiter.loom"
+        },
+        {
+          "include": "#generics"
+        }
+      ]
+    },
+    "object-types": {
+      "patterns": [
+        {
+          "name": "entity.name.class.loom",
+          "match": "(?<!\\.)\\b[A-Z_][a-zA-Z0-9_]*\\b"
+        }
+      ]
+    },
+    "comments": {
+      "patterns": [
+        {
+          "name": "comment.line.double-hash.loom",
+          "match": "##.*$"
+        },
+        {
+          "name": "comment.block",
+          "begin": "#:",
+          "end": ":#"
+        }
+      ]
+    },
+    "keywords": {
+      "patterns": [
+        {
+          "name": "keyword.control.loom",
+          "match": "\\b(if|else|while|for|after|every|break|continue|return)\\b"
+        },
+        {
+          "name": "keyword.control.loom",
+          "match": "\\bfn\\b(?!\\s+[_a-zA-Z][_a-zA-Z0-9]*)"
+        },
+        {
+          "name": "keyword.loom",
+          "match": "\\b(nameof|enum|interface|let|mut|private)\\b"
+        },
+        {
+          "include": "#primitive-types"
+        },
+        {
+          "name": "keyword.other.loom",
+          "match": "\\b(true|false)\\b"
+        },
+        {
+          "name": "entity.name.tag.loom",
+          "match": "\\b(none)\\b"
+        }
+      ]
+    },
+    "strings": {
+      "name": "string.quoted.double.loom",
+      "begin": "\"|'",
+      "beginCaptures": {
+        "0": {
+          "name": "punctuation.definition.string.begin.loom"
+        }
+      },
+      "end": "(\"|')|((?:[^\\\\\\n])$)",
+      "endCaptures": {
+        "1": {
+          "name": "punctuation.definition.string.end.loom"
+        },
+        "2": {
+          "name": "invalid.illegal.newline.loom"
+        }
+      },
+      "patterns": [
+        {
+          "name": "constant.character.escape.loom",
+          "match": "\\\\."
+        },
+        {
+          "name": "string.interpolated.loom",
+          "begin": "#\\{",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.section.interpolation.begin.loom"
+            }
+          },
+          "end": "\\}",
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.section.interpolation.end.loom"
+            }
+          },
+          "patterns": [
+            {
+              "include": "#comments"
+            },
+            {
+              "include": "#keywords"
+            },
+            {
+              "include": "#strings"
+            },
+            {
+              "include": "#characters"
+            },
+            {
+              "include": "#numerics"
+            },
+            {
+              "include": "#object-types"
+            },
+            {
+              "include": "#functions"
+            },
+            {
+              "include": "#identifiers"
+            }
+          ]
+        }
+      ]
+    },
+    "numerics": {
+      "name": "constant.numeric.loom",
+      "patterns": [
+        {
+          "name": "constant.numeric.loom",
+          "match": "\\b(0[bB][01_]+|0[xX][0-9a-fA-F_]+|0[oO][0-7_]+|(\\d|_)+(\\.(\\d|_)+)?([eE][\\+\\-]?\\d+)?[hHmMsS]?)\\b"
+        }
+      ]
+    },
+    "functions": {
+      "patterns": [
+        {
+          "name": "meta.function.loom",
+          "begin": "\\b(fn)\\s+([_a-zA-Z][_a-zA-Z0-9]*)",
+          "beginCaptures": {
+            "1": {
+              "name": "keyword.control.loom"
+            },
+            "2": {
+              "name": "entity.name.function.loom"
+            }
+          },
+          "end": "(?=\\s*\\()",
+          "patterns": [
+            {
+              "include": "#generics"
+            }
+          ]
+        },
+        {
+          "name": "meta.function-call.loom",
+          "match": "\\b([_a-zA-Z][_a-zA-Z0-9]*)\\s*\\(",
+          "captures": {
+            "1": {
+              "name": "entity.name.function.loom"
+            }
+          }
+        },
+        {
+          "name": "meta.function-call.loom",
+          "match": "\\b([_a-zA-Z][_a-zA-Z0-9]*)\\s*\\::<",
+          "captures": {
+            "1": {
+              "name": "entity.name.function.loom"
+            }
+          },
+          "patterns": [
+            {
+              "include": "#generics"
+            }
+          ]
+        },
+        {
+          "name": "support.function.loom",
+          "match": "\\b(print)\\b"
+        }
+      ]
+    },
+    "identifiers": {
+      "patterns": [
+        {
+          "name": "variable.other.loom",
+          "match": "\\b([_a-zA-Z][_a-zA-Z0-9_]*)\\b"
+        },
+        {
+          "match": "\\;",
+          "name": "punctuation.separator.semicolon.loom"
+        },
+        {
+          "match": "\\.",
+          "name": "punctuation.accessor.dot.loom"
+        },
+        {
+          "match": "(\\-|\\+|\\*|\\/\\/|\\/|\\^|\\%|\\~|\\&|\\|)",
+          "name": "keyword.operator.arithmetic.loom"
+        },
+        {
+          "match": "(=|-=|\\+=|\\*=|\\/=|\\^=|\\%=|\\~=|\\&=|\\|=|<<=|>>=|>>>=|&&=|\\|\\|=|\\?\\?=|//=|//)",
+          "name": "keyword.operator.assignment.loom"
+        },
+        {
+          "match": "(==|<=|>=|!=|<|>|<=|>=)",
+          "name": "keyword.operator.comparison.loom"
+        },
+        {
+          "match": "(!|&&|\\|\\||\\?|\\:|\\.\\.)",
+          "name": "keyword.operator.logical.loom"
+        },
+        {
+          "match": "(::<)",
+          "name": "keyword.operator.special.loom"
+        }
+      ]
+    }
+  },
+  "scopeName": "source.loom"
+}
