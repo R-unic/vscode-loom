@@ -1,8 +1,0 @@
-fn getHumanoidFromPlayer(player: Player) ->
-  player.Character?.FindFirstChildOfClass("Humanoid");
-
-fn abc {
-
-}
-
-fn myFunc -> 42;

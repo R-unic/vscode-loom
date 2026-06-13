@@ -24,7 +24,10 @@
       "include": "#object-types"
     },
     {
-      "include": "#functions"
+      "include": "#functions-events"
+    },
+    {
+      "include": "#type-aliases"
     },
     {
       "include": "#identifiers"
@@ -45,7 +48,7 @@
       ]
     },
     "primitive-types": {
-      "match": "\\b(number|string|bool|never|unknown|none)\\b",
+      "match": "\\b(number|string|bool|never|unknown|void|none)\\b",
       "name": "keyword.type.loom"
     },
     "generic-type": {
@@ -184,11 +187,11 @@
         },
         {
           "name": "keyword.control.loom",
-          "match": "\\bfn\\b(?!\\s+[_a-zA-Z][_a-zA-Z0-9]*)"
+          "match": "\\b(fn|event)\\b(?!\\s+[_a-zA-Z][_a-zA-Z0-9]*)"
         },
         {
           "name": "keyword.loom",
-          "match": "\\b(nameof|enum|interface|let|mut|private)\\b"
+          "match": "\\b(declare|nameof|enum|type|implement|interface|trait|as|let|mut|private)\\b"
         },
         {
           "include": "#primitive-types"
@@ -204,7 +207,7 @@
       ]
     },
     "strings": {
-      "name": "string.quoted.double.loom",
+      "name": "string.quoted.loom",
       "begin": "\"|'",
       "beginCaptures": {
         "0": {
@@ -221,10 +224,6 @@
         }
       },
       "patterns": [
-        {
-          "name": "constant.character.escape.loom",
-          "match": "\\\\."
-        },
         {
           "name": "string.interpolated.loom",
           "begin": "#\\{",
@@ -259,7 +258,10 @@
               "include": "#object-types"
             },
             {
-              "include": "#functions"
+              "include": "#functions-events"
+            },
+            {
+              "include": "#type-aliases"
             },
             {
               "include": "#identifiers"
@@ -273,15 +275,37 @@
       "patterns": [
         {
           "name": "constant.numeric.loom",
-          "match": "\\b(0[bB][01_]+|0[xX][0-9a-fA-F_]+|0[oO][0-7_]+|(\\d|_)+(\\.(\\d|_)+)?([eE][\\+\\-]?\\d+)?[hHmMsS]?)\\b"
+          "match": "\\b(0[bB][01_]+|0[xX][0-9a-fA-F_]+|0[oO][0-7_]+|(\\d|_)+(\\.(\\d|_)+)?([eE][\\+\\-]?\\d+)?[hH]?[mM]?[sS]?[mMsS]?[hHzZs]?)\\b"
         }
       ]
     },
-    "functions": {
+    "type-aliases": {
+      "patterns": [
+        {
+          "name": "meta.type-alias.loom",
+          "begin": "\\b(type)\\s+([_a-zA-Z][_a-zA-Z0-9]*)",
+          "beginCaptures": {
+            "1": {
+              "name": "keyword.loom"
+            },
+            "2": {
+              "name": "entity.name.function.loom"
+            }
+          },
+          "end": "(?=\\s*\\()",
+          "patterns": [
+            {
+              "include": "#generics"
+            }
+          ]
+        }
+      ]
+    },
+    "functions-events": {
       "patterns": [
         {
           "name": "meta.function.loom",
-          "begin": "\\b(fn)\\s+([_a-zA-Z][_a-zA-Z0-9]*)",
+          "begin": "\\b(fn|event)\\s+([_a-zA-Z][_a-zA-Z0-9]*)",
           "beginCaptures": {
             "1": {
               "name": "keyword.control.loom"
@@ -328,6 +352,10 @@
     },
     "identifiers": {
       "patterns": [
+        {
+          "match": "[\\[\\]\\(\\)\\{\\}]",
+          "name": "punctuation.bracket.loom"
+        },
         {
           "name": "variable.other.loom",
           "match": "\\b([_a-zA-Z][_a-zA-Z0-9_]*)\\b"
