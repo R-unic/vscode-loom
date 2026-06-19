@@ -1,16 +1,36 @@
-trait Greet {
-  fn greet(): string
+enum Job {
+  Unemployed,
+  Doctor,
+  Lawyer = 69,
+  Engineer,
+  Teacher,
+  Programmer,
+  AZ,
+  A
 }
 
-interface Person {
-  name: string
+interface HasName {
+  name: string;
 }
 
-implement Greet for Person {
-  fn greet() -> "Hello, #{name}!";
+interface HasAge {
+  age: number;
 }
 
-fn say_hello(greetable: Greet) -> print(greetable.greet());
+interface Person<J: Job>: HasName, HasAge {
+  job: J;
+  ssn: number;
+}
 
-let person: Person = { name: "Runic" };
-say_hello(person); ## Hello, Runic!
+#:
+interface Runic {
+  name: string;
+  age: number;
+  job: Job.Programmer;
+  ssn: number;
+}
+:#
+type Runic = Person<Job.Programmer>;
+
+let x = 69;
+mut y = 420;
