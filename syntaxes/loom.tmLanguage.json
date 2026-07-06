@@ -9,13 +9,10 @@
       "include": "#comments"
     },
     {
-      "include": "#keywords"
+      "include": "#enums"
     },
     {
       "include": "#strings"
-    },
-    {
-      "include": "#characters"
     },
     {
       "include": "#numerics"
@@ -24,10 +21,16 @@
       "include": "#object-types"
     },
     {
+      "include": "#type-aliases"
+    },
+    {
       "include": "#functions-events"
     },
     {
-      "include": "#type-aliases"
+      "include": "#keywords"
+    },
+    {
+      "include": "#function-calls"
     },
     {
       "include": "#identifiers"
@@ -55,12 +58,55 @@
         },
         {
           "include": "#object-types"
+        },
+        {
+          "include": "#default-expression"
         }
       ]
     },
     "primitive-types": {
       "match": "\\b(number|string|bool|never|unknown|void|none)\\b",
       "name": "keyword.type.loom"
+    },
+    "enums": {
+      "patterns": [
+        {
+          "begin": "\\b(enum)\\s+([A-Z][A-Za-z0-9_]*)\\s*(\\{)",
+          "beginCaptures": {
+            "1": {
+              "name": "keyword.loom"
+            },
+            "2": {
+              "name": "entity.name.type.enum.loom"
+            },
+            "3": {
+              "name": "punctuation.bracket.loom"
+            }
+          },
+          "end": "\\}",
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.bracket.loom"
+            }
+          },
+          "patterns": [
+            {
+              "name": "variable.other.enummember.loom",
+              "match": "\\b[A-Za-z_][A-Za-z0-9_]*\\b"
+            },
+            {
+              "match": ",",
+              "name": "punctuation.separator.delimiter.loom"
+            },
+            {
+              "include": "#strings"
+            },
+            {
+              "include": "#numerics"
+            }
+          ]
+        }
+      ]
     },
     "generic-type": {
       "begin": "([a-zA-Z_][a-zA-Z0-9_]*)\\s*(<)",
@@ -194,7 +240,7 @@
       "patterns": [
         {
           "name": "keyword.control.loom",
-          "match": "\\b(if|else|while|for|after|every|break|continue|return)\\b"
+          "match": "\\b(if|else|while|for|after|every|defer|break|continue|return|defer)\\b"
         },
         {
           "name": "keyword.control.loom",
@@ -202,7 +248,7 @@
         },
         {
           "name": "keyword.loom",
-          "match": "\\b(declare|nameof|enum|type|implement|interface|trait|as|let|mut|private)\\b"
+          "match": "\\b(declare|nameof|keyof|typeof|enum|type|implement|interface|trait|as|let|mut|new)\\b"
         },
         {
           "include": "#primitive-types"
@@ -218,64 +264,86 @@
       ]
     },
     "strings": {
-      "name": "string.quoted.loom",
-      "begin": "\"|'",
-      "beginCaptures": {
-        "0": {
-          "name": "punctuation.definition.string.begin.loom"
-        }
-      },
-      "end": "(\"|')|((?:[^\\\\\\n])$)",
-      "endCaptures": {
-        "1": {
-          "name": "punctuation.definition.string.end.loom"
-        },
-        "2": {
-          "name": "invalid.illegal.newline.loom"
-        }
-      },
       "patterns": [
         {
-          "name": "string.interpolated.loom",
-          "begin": "#\\{",
+          "name": "string.quoted.double.loom",
+          "begin": "\"",
           "beginCaptures": {
             "0": {
-              "name": "punctuation.section.interpolation.begin.loom"
+              "name": "punctuation.definition.string.begin.loom"
             }
           },
-          "end": "\\}",
+          "end": "\"",
           "endCaptures": {
             "0": {
-              "name": "punctuation.section.interpolation.end.loom"
+              "name": "punctuation.definition.string.end.loom"
             }
           },
           "patterns": [
             {
-              "include": "#comments"
+              "name": "meta.interpolation.loom",
+              "begin": "#\\{",
+              "beginCaptures": {
+                "0": {
+                  "name": "punctuation.section.interpolation.begin.loom"
+                }
+              },
+              "end": "\\}",
+              "endCaptures": {
+                "0": {
+                  "name": "punctuation.section.interpolation.end.loom"
+                }
+              },
+              "patterns": [
+                {
+                  "include": "$self"
+                }
+              ]
             },
             {
-              "include": "#keywords"
+              "match": "\\\\.",
+              "name": "constant.character.escape.loom"
+            }
+          ]
+        },
+        {
+          "name": "string.quoted.single.loom",
+          "begin": "'",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.definition.string.begin.loom"
+            }
+          },
+          "end": "'",
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.definition.string.end.loom"
+            }
+          },
+          "patterns": [
+            {
+              "name": "meta.interpolation.loom",
+              "begin": "#\\{",
+              "beginCaptures": {
+                "0": {
+                  "name": "punctuation.section.interpolation.begin.loom"
+                }
+              },
+              "end": "\\}",
+              "endCaptures": {
+                "0": {
+                  "name": "punctuation.section.interpolation.end.loom"
+                }
+              },
+              "patterns": [
+                {
+                  "include": "$self"
+                }
+              ]
             },
             {
-              "include": "#strings"
-            },
-            {
-              "include": "#characters"
-            },
-            {
-              "include": "#numerics"
-            },
-            {
-              "include": "#object-types"
-            },
-            {
-              "include": "#functions-events"
-            },
-            {
-              "include": "#type-aliases"
-            },
-            {
-              "include": "#identifiers"
+              "match": "\\\\.",
+              "name": "constant.character.escape.loom"
             }
           ]
         }
@@ -293,7 +361,7 @@
     "type-aliases": {
       "patterns": [
         {
-          "name": "meta.type-alias.loom",
+          "name": "meta.typealias.loom",
           "begin": "\\b(type)\\s+([_a-zA-Z][_a-zA-Z0-9]*)",
           "beginCaptures": {
             "1": {
@@ -307,6 +375,9 @@
           "patterns": [
             {
               "include": "#generics"
+            },
+            {
+              "include": "#type"
             }
           ]
         }
@@ -325,13 +396,24 @@
               "name": "entity.name.function.loom"
             }
           },
-          "end": "(?=\\s*\\()",
+          "end": "(?=\\s*[\\-\\>|\\{|\\;||\n])",
           "patterns": [
             {
               "include": "#generics"
+            },
+            {
+              "include": "#type"
             }
           ]
         },
+        {
+          "name": "support.function.loom",
+          "match": "\\b(print)\\b"
+        }
+      ]
+    },
+    "function-calls": {
+      "patterns": [
         {
           "name": "meta.function-call.loom",
           "match": "\\b([_a-zA-Z][_a-zA-Z0-9]*)\\s*\\!?\\(",
@@ -352,12 +434,11 @@
           "patterns": [
             {
               "include": "#generics"
+            },
+            {
+              "include": "#type"
             }
           ]
-        },
-        {
-          "name": "support.function.loom",
-          "match": "\\b(print)\\b"
         }
       ]
     },
