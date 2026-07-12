@@ -362,7 +362,7 @@
       "patterns": [
         {
           "name": "meta.typealias.loom",
-          "begin": "\\b(type)\\s+([_a-zA-Z][_a-zA-Z0-9]*)",
+          "begin": "\\b(type)\\s+([_a-zA-Z][_a-zA-Z0-9]*)\\<?",
           "beginCaptures": {
             "1": {
               "name": "keyword.loom"
@@ -371,7 +371,7 @@
               "name": "entity.name.type.loom"
             }
           },
-          "end": "(?=\\s*\\()",
+          "end": "(?=\\s*)",
           "patterns": [
             {
               "include": "#generics"

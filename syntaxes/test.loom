@@ -1,32 +1,52 @@
-enum Syntax {
-  Plus, Minus,
-  Star, Slash
-}
-
-interface SyntaxMap {
-  [string]: Syntax;
-}
-
-let keyword_map = new SyntaxMap { ["+"]: Syntax.Plus }
-
-interface LexerState {
-  source: string;
-  mut position: number;
-  mut character: number;
-  mut line: number;
-}
-
-let state = new LexerState {
-  source: "+-*/"
-  position: 0,
-  character: 0,
-  line: 1
+interface Component {
+  name: string;
 };
+type Entity = number;
 
-fn advance(state: LexerState) {
-  let char = state.source[state.position];
-  state.position += 1;
-  state.character += 1;
-
-  return char;
+interface ComponentStorage {
+  mut [Entity]: Component[mut];
 }
+
+interface WorldData {
+  component_storage: ComponentStorage;
+}
+
+mut eid: Entity = -1;
+trait World {
+  fn spawn(components: Component[]): Entity;
+  fn query<T: Component>(entity: Entity, name: string): T[];
+}
+
+implement World for WorldData {
+  fn spawn(components) {
+    let entity = eid += 1;
+    if component_storage[entity] == none {
+      component_storage[entity] = components;
+    }
+    else {
+      for c : components
+        component_storage[entity].push(c);
+    }
+
+    return entity;
+  }
+
+  fn query<T: Component>(entity, name) {
+    let components = component_storage[entity];
+    let result: T[] = [];
+    for c : components
+      if c.name == name
+        result.push(c as T);
+
+    return result;
+  }
+}
+
+interface Position: Component {
+  x: number;
+  y: number;
+}
+
+let world = new World { component_storage: new ComponentStorage {} };
+let player = world.spawn([new Position { name: nameof(Position), x: 69, y: 420 }]);
+print(world.query::<Position>(player, nameof(Position)))
