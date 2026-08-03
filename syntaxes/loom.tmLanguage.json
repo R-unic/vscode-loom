@@ -60,6 +60,9 @@
           "include": "#object-types"
         },
         {
+          "include": "#keywords"
+        },
+        {
           "include": "#default-expression"
         }
       ]
@@ -248,7 +251,7 @@
         },
         {
           "name": "keyword.loom",
-          "match": "\\b(declare|nameof|keyof|typeof|enum|type|implement|interface|trait|as|let|mut|new)\\b"
+          "match": "\\b(declare|nameof|keyof|typeof|enum|type|implement|interface|trait|as|let|mut|new|is|not|when|match)\\b"
         },
         {
           "include": "#primitive-types"
@@ -405,10 +408,6 @@
               "include": "#type"
             }
           ]
-        },
-        {
-          "name": "support.function.loom",
-          "match": "\\b(print)\\b"
         }
       ]
     },
