@@ -269,8 +269,8 @@
     "strings": {
       "patterns": [
         {
-          "name": "string.quoted.double.loom",
-          "begin": "\"",
+          "name": "string.interpolated.double.loom",
+          "begin": "\\$\"",
           "beginCaptures": {
             "0": {
               "name": "punctuation.definition.string.begin.loom"
@@ -285,7 +285,7 @@
           "patterns": [
             {
               "name": "meta.interpolation.loom",
-              "begin": "#\\{",
+              "begin": "\\{",
               "beginCaptures": {
                 "0": {
                   "name": "punctuation.section.interpolation.begin.loom"
@@ -310,6 +310,27 @@
           ]
         },
         {
+          "name": "string.quoted.double.loom",
+          "begin": "\"",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.definition.string.begin.loom"
+            }
+          },
+          "end": "\"",
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.definition.string.end.loom"
+            }
+          },
+          "patterns": [
+            {
+              "match": "\\\\.",
+              "name": "constant.character.escape.loom"
+            }
+          ]
+        },
+        {
           "name": "string.quoted.single.loom",
           "begin": "'",
           "beginCaptures": {
@@ -324,26 +345,6 @@
             }
           },
           "patterns": [
-            {
-              "name": "meta.interpolation.loom",
-              "begin": "#\\{",
-              "beginCaptures": {
-                "0": {
-                  "name": "punctuation.section.interpolation.begin.loom"
-                }
-              },
-              "end": "\\}",
-              "endCaptures": {
-                "0": {
-                  "name": "punctuation.section.interpolation.end.loom"
-                }
-              },
-              "patterns": [
-                {
-                  "include": "$self"
-                }
-              ]
-            },
             {
               "match": "\\\\.",
               "name": "constant.character.escape.loom"
