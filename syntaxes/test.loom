@@ -1,0 +1,4 @@
+enum A {
+  B
+}
+let abc = $"a{A.B}c"
