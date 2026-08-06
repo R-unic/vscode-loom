@@ -1,5 +1,5 @@
 {
-  "name": "vscode-loom",
+  "name": "loom-language",
   "displayName": "Loom Language",
   "description": "Provides syntax highlighting, code snippets, and language server features for the Loom programming language for Roblox.",
   "version": "0.1.0",
