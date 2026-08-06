@@ -66,7 +66,7 @@ jobs:
         if: github.event_name == 'push' || inputs.publish
         env:
           VSCE_PAT: ${{ secrets.VSCE_PAT }}
-        run: npx vsce publish --target ${{ matrix.target }} --packagePath loom-${{ matrix.target }}.vsix -p "$VSCE_PAT"
+        run: npx vsce publish --packagePath loom-${{ matrix.target }}.vsix -p "$VSCE_PAT"
 
       - name: Upload VSIX artifact
         uses: actions/upload-artifact@v4
