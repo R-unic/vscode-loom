@@ -1,17 +1,17 @@
 
 <p>
   <p align="center">
-    <a href="https://marketplace.visualstudio.com/items?itemName=loom-lang.loom-language">
-      <img alt="Visual Studio Marketplace Version" src="https://img.shields.io/visual-studio-marketplace/v/loom-lang.loom-language?label=Visual%20Studio%20Marketplace" />
+    <a href="https://marketplace.visualstudio.com/items?itemName=loom-lang.vscode-loom-lang">
+      <img alt="Visual Studio Marketplace Version" src="https://img.shields.io/visual-studio-marketplace/v/loom-lang.vscode-loom-lang?label=Visual%20Studio%20Marketplace" />
     </a>
-    <a href="https://marketplace.visualstudio.com/items?itemName=loom-lang.loom-language">
-      <img alt="Visual Studio Marketplace Downloads" src="https://img.shields.io/visual-studio-marketplace/d/loom-lang.loom-language" />
+    <a href="https://marketplace.visualstudio.com/items?itemName=loom-lang.vscode-loom-lang">
+      <img alt="Visual Studio Marketplace Downloads" src="https://img.shields.io/visual-studio-marketplace/d/loom-lang.vscode-loom-lang" />
     </a>
-    <a href="https://marketplace.visualstudio.com/items?itemName=loom-lang.loom-language">
-      <img alt="Visual Studio Marketplace Installs" src="https://img.shields.io/visual-studio-marketplace/i/loom-lang.loom-language" />
+    <a href="https://marketplace.visualstudio.com/items?itemName=loom-lang.vscode-loom-lang">
+      <img alt="Visual Studio Marketplace Installs" src="https://img.shields.io/visual-studio-marketplace/i/loom-lang.vscode-loom-lang" />
     </a>
-    <a href="https://marketplace.visualstudio.com/items?itemName=loom-lang.loom-language">
-      <img alt="Visual Studio Marketplace Rating" src="https://img.shields.io/visual-studio-marketplace/r/loom-lang.loom-language">
+    <a href="https://marketplace.visualstudio.com/items?itemName=loom-lang.vscode-loom-lang">
+      <img alt="Visual Studio Marketplace Rating" src="https://img.shields.io/visual-studio-marketplace/r/loom-lang.vscode-loom-lang">
     </a>
  </p>
 </p>
