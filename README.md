@@ -19,4 +19,36 @@
 
 # Loom Extension
 
-This is a Visual Studio Code extension that provides syntax highlighting and code snippets for the [Loom programming language](https://github.com/R-unic/loom). In the future it will provide a language server.
+This is a Visual Studio Code extension that provides syntax highlighting, code snippets, and language server features (diagnostics, hover, completion, go-to-definition) for the [Loom programming language](https://github.com/rbx-loom/loom).
+
+## Settings
+
+- `loom.languageServerPath` — path to a `Loom.LanguageServer` executable. Leave empty to use the version bundled with this extension for your platform.
+- `loom.trace.server` — trace communication between VS Code and the Loom language server (`off`, `messages`, `verbose`).
+
+## Development
+
+```bash
+npm install
+npm run build:server   # publishes Loom.LanguageServer for your platform into server/
+npm run watch          # bundle the extension with esbuild in watch mode
+```
+
+`build:server` looks for a sibling checkout of [rbx-loom/loom](https://github.com/rbx-loom/loom) by default; set the `LOOM_REPO` environment variable to point elsewhere. Press F5 in VS Code to launch an Extension Development Host.
+
+## Release process
+
+Each release is published per-platform as a self-contained VSIX (the `Loom.LanguageServer` binary is bundled, so end users don't need a separate install).
+
+1. Bump `version` in `package.json` and commit.
+2. Tag the commit, e.g. `git tag v0.2.0 && git push origin v0.2.0`.
+3. Pushing the tag triggers [`.github/workflows/publish.yml`](.github/workflows/publish.yml), which builds, packages, and publishes `win32-x64`, `linux-x64`, `darwin-x64`, and `darwin-arm64` VSIXes to the Marketplace, and attaches them to a GitHub release.
+
+You can also run the workflow manually via `workflow_dispatch` to build and package without publishing (leave the `publish` input unchecked).
+
+### One-time setup: Marketplace publish token
+
+The workflow publishes using a `VSCE_PAT` repository secret:
+
+1. Create an Azure DevOps personal access token scoped to **Marketplace (Manage)**, associated with the `loom-lang` publisher — see the [vsce publishing docs](https://code.visualstudio.com/api/working-with-extensions/publishing-extension#get-a-personal-access-token).
+2. In this repository's GitHub settings, go to **Settings → Secrets and variables → Actions** and add a new repository secret named `VSCE_PAT` with that token as the value.

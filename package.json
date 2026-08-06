@@ -1,18 +1,25 @@
 {
   "name": "vscode-loom",
   "displayName": "Loom Language",
-  "description": "Provides syntax highlighting and code snippets for the Loom programming language for Roblox.",
+  "description": "Provides syntax highlighting, code snippets, and language server features for the Loom programming language for Roblox.",
   "version": "0.1.0",
+  "publisher": "loom-lang",
   "icon": "assets/icon.png",
   "engines": {
-    "vscode": "^1.7.0"
+    "vscode": "^1.91.0"
   },
   "categories": [
     "Programming Languages"
   ],
   "repository": {
-    "url": "https://github.com/R-unic/loom"
+    "type": "git",
+    "url": "https://github.com/R-unic/vscode-loom"
   },
+  "main": "./dist/extension.js",
+  "activationEvents": [
+    "onLanguage:loom",
+    "workspaceContains:**/loom-config.toml"
+  ],
   "contributes": {
     "languages": [
       {
@@ -43,6 +50,45 @@
         "language": "loom",
         "path": "./snippets/loom.json"
       }
-    ]
+    ],
+    "configuration": {
+      "type": "object",
+      "title": "Loom",
+      "properties": {
+        "loom.languageServerPath": {
+          "type": "string",
+          "default": "",
+          "markdownDescription": "Path to a `Loom.LanguageServer` executable. Leave empty to use the version bundled with this extension."
+        },
+        "loom.trace.server": {
+          "type": "string",
+          "enum": [
+            "off",
+            "messages",
+            "verbose"
+          ],
+          "default": "off",
+          "description": "Traces the communication between VS Code and the Loom language server."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "node esbuild.js --production",
+    "watch": "node esbuild.js --watch",
+    "typecheck": "tsc --noEmit -p ./",
+    "build:server": "node scripts/build-server.js",
+    "package": "vsce package"
+  },
+  "dependencies": {
+    "vscode-languageclient": "^10.1.0"
+  },
+  "devDependencies": {
+    "@types/node": "^26.1.2",
+    "@types/vscode": "^1.91.0",
+    "@vscode/vsce": "^3.9.2",
+    "esbuild": "^0.28.1",
+    "typescript": "^5.9.3"
   }
 }

@@ -1,0 +1,93 @@
+name: Publish extension
+
+on:
+  push:
+    tags:
+      - "v*.*.*"
+  workflow_dispatch:
+    inputs:
+      publish:
+        description: "Publish to the VS Code Marketplace (unchecked = build + package only)"
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - target: win32-x64
+            rid: win-x64
+          - target: linux-x64
+            rid: linux-x64
+          - target: darwin-x64
+            rid: osx-x64
+          - target: darwin-arm64
+            rid: osx-arm64
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout vscode-loom
+        uses: actions/checkout@v4
+
+      - name: Checkout rbx-loom/loom
+        uses: actions/checkout@v4
+        with:
+          repository: rbx-loom/loom
+          path: loom-repo
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "10.0.x"
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build language server (${{ matrix.rid }})
+        env:
+          RID: ${{ matrix.rid }}
+          LOOM_REPO: ${{ github.workspace }}/loom-repo
+        run: node scripts/build-server.js
+
+      - name: Package extension
+        run: npx vsce package --target ${{ matrix.target }} -o loom-${{ matrix.target }}.vsix
+
+      - name: Publish to Marketplace
+        if: github.event_name == 'push' || inputs.publish
+        env:
+          VSCE_PAT: ${{ secrets.VSCE_PAT }}
+        run: npx vsce publish --target ${{ matrix.target }} --packagePath loom-${{ matrix.target }}.vsix -p "$VSCE_PAT"
+
+      - name: Upload VSIX artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: vsix-${{ matrix.target }}
+          path: loom-${{ matrix.target }}.vsix
+
+  release:
+    needs: build
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download all VSIX artifacts
+        uses: actions/download-artifact@v4
+        with:
+          pattern: vsix-*
+          merge-multiple: true
+          path: vsix
+
+      - name: Create GitHub release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: vsix/*.vsix
+          generate_release_notes: true
