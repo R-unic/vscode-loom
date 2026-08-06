@@ -45,10 +45,3 @@ Each release is published per-platform as a self-contained VSIX (the `Loom.Langu
 3. Pushing the tag triggers [`.github/workflows/publish.yml`](.github/workflows/publish.yml), which builds, packages, and publishes `win32-x64`, `linux-x64`, `darwin-x64`, and `darwin-arm64` VSIXes to the Marketplace, and attaches them to a GitHub release.
 
 You can also run the workflow manually via `workflow_dispatch` to build and package without publishing (leave the `publish` input unchecked).
-
-### One-time setup: Marketplace publish token
-
-The workflow publishes using a `VSCE_PAT` repository secret:
-
-1. Create an Azure DevOps personal access token scoped to **Marketplace (Manage)**, associated with the `loom-lang` publisher — see the [vsce publishing docs](https://code.visualstudio.com/api/working-with-extensions/publishing-extension#get-a-personal-access-token).
-2. In this repository's GitHub settings, go to **Settings → Secrets and variables → Actions** and add a new repository secret named `VSCE_PAT` with that token as the value.
