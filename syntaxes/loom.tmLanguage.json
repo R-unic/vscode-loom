@@ -36,9 +36,6 @@
       "include": "#function-calls"
     },
     {
-      "include": "#attributes"
-    },
-    {
       "include": "#identifiers"
     },
     {
@@ -82,7 +79,7 @@
       ]
     },
     "primitive-types": {
-      "match": "\\b(number|string|bool|never|unknown|void|none)\\b",
+      "match": "\\b(number|string|bool|never|unknown|void|none|u8|u16|u32|i8|i16|i32|f32|f64|Tuple)\\b",
       "name": "keyword.type.loom"
     },
     "enums": {
@@ -474,18 +471,14 @@
           },
           "patterns": [
             {
-              "name": "entity.name.function.loom",
+              "name": "entity.other.attribute-name.loom",
               "match": "\\b[_a-zA-Z][_a-zA-Z0-9]*\\b"
             },
             {
-              "match": ",",
-              "name": "punctuation.separator.delimiter.loom"
+              "include": "#numerics"
             },
             {
               "include": "#strings"
-            },
-            {
-              "include": "#numerics"
             }
           ]
         }
@@ -494,7 +487,7 @@
     "identifiers": {
       "patterns": [
         {
-          "match": "[\\[\\]\\(\\)\\{\\}]",
+          "match": "[\\(\\)\\{\\}]",
           "name": "punctuation.bracket.loom"
         },
         {

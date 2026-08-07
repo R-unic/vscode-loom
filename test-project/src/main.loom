@@ -1,6 +1,14 @@
-[serializable, packed]
+[baz, serializable, packed, bar]
 interface Foo {
+  [goober]
   balls: number;
+
+  [Messages["Foo"]]: 69;
+}
+
+[foopa]
+fn abc {
+
 }
 
 let foo = new Foo { balls: 69 };
