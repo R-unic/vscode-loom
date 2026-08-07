@@ -1,0 +1,5 @@
+interface Foo {
+  balls: number;
+}
+
+let foo = new Foo { balls: 69 };

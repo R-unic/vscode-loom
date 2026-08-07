@@ -251,7 +251,7 @@
         },
         {
           "name": "keyword.loom",
-          "match": "\\b(declare|nameof|keyof|typeof|enum|type|implement|interface|trait|as|let|mut|new|is|not|when|match)\\b"
+          "match": "\\b(declare|nameof|keyof|typeof|enum|type|implement|interface|trait|as|let|mut|new|is|not|when|match|export|import|from|in|defer)\\b"
         },
         {
           "include": "#primitive-types"
