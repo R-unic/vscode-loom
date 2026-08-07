@@ -1,5 +1,7 @@
+[serializable, packed]
 interface Foo {
   balls: number;
 }
 
 let foo = new Foo { balls: 69 };
+let s = serialize_binary(foo);

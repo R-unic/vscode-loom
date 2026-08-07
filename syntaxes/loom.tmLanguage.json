@@ -27,10 +27,16 @@
       "include": "#functions-events"
     },
     {
+      "include": "#builtin-functions"
+    },
+    {
       "include": "#keywords"
     },
     {
       "include": "#function-calls"
+    },
+    {
+      "include": "#attributes"
     },
     {
       "include": "#identifiers"
@@ -40,6 +46,14 @@
     }
   ],
   "repository": {
+    "builtin-functions": {
+      "patterns": [
+        {
+          "name": "entity.name.function.loom",
+          "match": "\\b(print|override|serializable|packed|number_range|number_step|ignore_serialization|cframe_type|luau_metamethod|luau_name|luau_method|attribute_usage|get_metadata|has_attribute|serialize_binary|deserialize_binary|metadata_only|serializer|diff_binary|apply_diff_binary)\\b"
+        }
+      ]
+    },
     "constants": {
       "patterns": [
         {
@@ -437,6 +451,41 @@
             },
             {
               "include": "#type"
+            }
+          ]
+        }
+      ]
+    },
+    "attributes": {
+      "patterns": [
+        {
+          "name": "meta.attribute.loom",
+          "begin": "\\[",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.bracket.loom"
+            }
+          },
+          "end": "\\]",
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.bracket.loom"
+            }
+          },
+          "patterns": [
+            {
+              "name": "entity.name.function.loom",
+              "match": "\\b[_a-zA-Z][_a-zA-Z0-9]*\\b"
+            },
+            {
+              "match": ",",
+              "name": "punctuation.separator.delimiter.loom"
+            },
+            {
+              "include": "#strings"
+            },
+            {
+              "include": "#numerics"
             }
           ]
         }
